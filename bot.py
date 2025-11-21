@@ -12,10 +12,10 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 import os
 import time
 
-pyrogram.utils.MIN_CHANNEL_ID = 
+pyrogram.utils.MIN_CHANNEL_ID =-1003398204391
 
 # Setting SUPPORT_CHAT directly here
-SUPPORT_CHAT = int(os.environ.get("SUPPORT_CHAT", ""))
+SUPPORT_CHAT = int(os.environ.get("SUPPORT_CHAT", "-1003415296047"))
 
 PORT = Config.PORT
 
