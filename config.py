@@ -15,7 +15,7 @@ class Config(object):
 
     # Admin & Channel settings
     id_pattern = re.compile(r'^-?\d+$')
-    ADMIN = [int(x) for x in os.environ.get("ADMIN", "6497757690").split() if id_pattern.search(x)]
+    ADMIN = [int(x) for x in os.environ.get("ADMIN", "").split() if id_pattern.search(x)]
 
     FORCE_SUB_CHANNELS = os.environ.get("FORCE_SUB_CHANNELS", "0").split(',')
 
