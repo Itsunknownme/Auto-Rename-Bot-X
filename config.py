@@ -1,10 +1,10 @@
 import re, os, time
 
 
-class Config(object):
+id_pattern = re.compile(r'^-?\d+$')  # << Define outside class
 
-    # Regex Pattern
-    id_pattern = re.compile(r'^-?\d+$')
+
+class Config(object):
 
     # Basic Bot Configuration
     API_ID    = os.environ.get("API_ID", "")
@@ -16,7 +16,7 @@ class Config(object):
     DB_URL  = os.environ.get("DB_URL", "")
     PORT    = os.environ.get("PORT", "8080")
 
-    # Admin & Channel settings
+    # Admin Users
     ADMIN = [int(x) for x in os.environ.get("ADMIN", "").split() if id_pattern.search(x)]
 
     FORCE_SUB_CHANNELS = os.environ.get("FORCE_SUB_CHANNELS", "0").split(',')
