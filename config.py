@@ -1,40 +1,130 @@
 import re, os, time
-from os import environ, getenv
-id_pattern = re.compile(r'^.\d+$') 
 
 
 class Config(object):
-    # pyro client config
+
+    # Basic Bot Configuration
     API_ID    = os.environ.get("API_ID", "")
     API_HASH  = os.environ.get("API_HASH", "")
-    BOT_TOKEN = os.environ.get("BOT_TOKEN", "") 
+    BOT_TOKEN = os.environ.get("BOT_TOKEN", "")
 
-    # database config
-    DB_NAME = os.environ.get("DB_NAME","ABCF")     
-    DB_URL  = os.environ.get("DB_URL","")
-    PORT = os.environ.get("PORT", "8080")
- 
-    # other configs
-    BOT_UPTIME  = time.time()
-    START_PIC   = os.environ.get("START_PIC", "https://graph.org/file/29a3acbbab9de5f45a5fe.jpg")
-    ADMIN       = [int(admin) if id_pattern.search(admin) else admin for admin in os.environ.get('ADMIN', '6497757690').split()]
-    FORCE_SUB_CHANNELS = os.environ.get('FORCE_SUB_CHANNELS', '0').split(',')
-    LOG_CHANNEL = int(os.environ.get("LOG_CHANNEL", ""))
-    DUMP_CHANNEL = int(os.environ.get("DUMP_CHANNEL", ""))
-    
-    # wes response configuration     
-    WEBHOOK = bool(os.environ.get("WEBHOOK", "True"))
+    # Database
+    DB_NAME = os.environ.get("DB_NAME", "AutoRenameBot")
+    DB_URL  = os.environ.get("DB_URL", "")
+    PORT    = os.environ.get("PORT", "8080")
+
+    # Admin & Channel settings
+    id_pattern = re.compile(r'^-?\d+$')
+    ADMIN = [int(x) for x in os.environ.get("ADMIN", "6497757690").split() if id_pattern.search(x)]
+
+    FORCE_SUB_CHANNELS = os.environ.get("FORCE_SUB_CHANNELS", "0").split(',')
+
+    LOG_CHANNEL  = int(os.environ.get("LOG_CHANNEL")) if os.environ.get("LOG_CHANNEL") else None
+    DUMP_CHANNEL = int(os.environ.get("DUMP_CHANNEL")) if os.environ.get("DUMP_CHANNEL") else None
+
+    # Other Config
+    BOT_UPTIME = time.time()
+    START_PIC  = os.environ.get("START_PIC", "https://graph.org/file/29a3acbbab9de5f45a5fe.jpg")
+
+    WEBHOOK = os.environ.get("WEBHOOK", "True").lower() == "true"
+
 
 
 class Txt(object):
-    # part of text configuration
-        
-    START_TXT = """<b>ʜᴇʏ! {}  
 
-» ɪ ᴀᴍ ᴀᴅᴠᴀɴᴄᴇᴅ ʀᴇɴᴀᴍᴇ ʙᴏᴛ! ᴡʜɪᴄʜ ᴄᴀɴ ᴀᴜᴛᴏʀᴇɴᴀᴍᴇ ʏᴏᴜʀ ғɪʟᴇs ᴡɪᴛʜ ᴄᴜsᴛᴏᴍ ᴄᴀᴘᴛɪᴏɴ ᴀɴᴅ ᴛʜᴜᴍʙɴᴀɪʟ ᴀɴᴅ ᴀʟsᴏ sᴇǫᴜᴇɴᴄᴇ ᴛʜᴇᴍ ᴘᴇʀғᴇᴄᴛʟʏ</b>"""
-    
-    FILE_NAME_TXT = """<b>» <u>sᴇᴛᴜᴘ ᴀᴜᴛᴏ ʀᴇɴᴀᴍᴇ ғᴏʀᴍᴀᴛ</u></b>
+    START_TXT = """Hello {},
 
+I am an Auto Rename Bot.
+I can rename files automatically, set custom captions & thumbnails,
+and support episode-based auto formatting.
+
+Send any file to begin.
+"""
+
+    FILE_NAME_TXT = """Auto Rename Format Setup
+
+Variables:
+• episode – Episode number
+• season – Season number
+• quality – Video quality
+
+Example:
+/autorename Overflow [Sseason Eepisode] quality
+"""
+
+    THUMBNAIL_TXT = """Custom Thumbnail Setup:
+
+• Send a photo to set thumbnail
+• /view_thumb – View current thumbnail
+• /del_thumb – Delete thumbnail
+"""
+
+    CAPTION_TXT = """Custom Caption Format
+
+Available variables:
+{filename} – file name
+{filesize} – size
+{duration} – duration
+
+Commands:
+/set_caption – Set caption
+/see_caption – View caption
+/del_caption – Delete caption
+"""
+
+    PROGRESS_BAR = """
+Progress:
+Completed: {0}%
+Size: {1} / {2}
+Speed: {3}/s
+ETA: {4}
+"""
+
+    HELP_TXT = """Help Menu
+
+Commands:
+/autorename – Auto rename files
+/set_caption – Custom caption
+/metadata – Toggle metadata editing
+/help – Show help
+"""
+
+    SEND_METADATA = """
+Metadata Settings
+
+/metadata – Enable or disable metadata editing for MKV files
+"""
+
+    SOURCE_TXT = """
+Auto Rename Bot – Open Source
+
+Written in Python using Pyrogram & MongoDB.
+
+Source Code:
+https://github.com/codeflix_bots/autorenamebot
+"""
+    HELP_TXT = """Help Menu
+
+• /autorename – Auto rename media
+• /metadata – Enable/Disable metadata editing
+• /help – Show help menu
+"""
+
+    SEND_METADATA = """
+Metadata Settings
+
+/metadata – Toggle metadata update for MKV files
+"""
+
+    SOURCE_TXT = """
+Auto Rename Bot – Open Source
+
+Written in Python using:
+Pyrogram, python-telegram-bot, MongoDB
+
+Source Code:
+https://github.com/codeflix_bots/autorenamebot
+"""
 <b>ᴠᴀʀɪᴀʙʟᴇꜱ :</b>
 ➲ ᴇᴘɪꜱᴏᴅᴇ - ᴛᴏ ʀᴇᴘʟᴀᴄᴇ ᴇᴘɪꜱᴏᴅᴇ ɴᴜᴍʙᴇʀ  
 ➲ ꜱᴇᴀꜱᴏɴ - ᴛᴏ ʀᴇᴘʟᴀᴄᴇ ꜱᴇᴀꜱᴏɴ ɴᴜᴍʙᴇʀ  
